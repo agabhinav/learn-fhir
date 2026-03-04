@@ -37,6 +37,8 @@ Introduces prior authorization as a workflow problem, explains why it is
 different from data access, and sets the stage for understanding more
 advanced workflow‑oriented standards.
 
+* [CRD - Coverage Requirements Discovery](prior-auth/01-crd.md)
+
 ---
 
 ## What This Repo Is (and Is Not)
