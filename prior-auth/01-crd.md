@@ -152,6 +152,11 @@ Even when PA is required, the payer may be able to make a real-time determinatio
 
 If the payer cannot make a real-time determination and needs more information, the `systemAction` will carry:
 * `pa-needed: auth-required`
+* `doc-needed` — tells the EHR what type of additional documentation is needed to support the request
+  * `clinical` - clinical documentation is needed (e.g., chart notes, diagnosis history)
+  * `admin` — administrative documentation is needed (e.g., referral, proof of prior treatment)
+  * `both` — both clinical and administrative documentation are needed
+  * `no-doc-needed` — no additional documentation required
 * A reference to one or more Questionnaire resources — these are the DTR forms the clinician (or staff) will need to fill out to support the PA request
 
 If additional documentation is required, the `systemAction` on that order will carry `pa-needed: auth-required` along with a reference to the relevant Questionnaire(s) in `questionnaire: <url to the questionnaire>`. 
@@ -178,7 +183,7 @@ flowchart TD
 
     F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = auth-required, approved]
 
-    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
+    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>doc-needed = clinical #124 admin #124 both<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
 
     style C1 fill:#4a4a4a,color:#ffffff,stroke:#888888
     style D1 fill:#4a4a4a,color:#ffffff,stroke:#888888
