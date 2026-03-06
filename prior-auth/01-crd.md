@@ -92,7 +92,7 @@ The diagram below shows the important parts of the CRD Request and Response:
 
 ### What the Payer's CDS Server Receives
 
-When the EHR fires the order-sign hook, the payer's CDS Server gets a request containing:
+When the EHR fires the `order-sign` hook, the payer's CDS Server gets a request containing:
 
 * `context.patientId` — the patient's identifier in the EHR
 * `context.draftOrders` — the Bundle of orders being signed (ServiceRequest, MedicationRequest, DeviceRequest, etc.)
@@ -135,6 +135,7 @@ The payer's CDS Server takes those codes and looks them up against the member's 
 **What the server looks at:** The procedure/drug codes from the orders, combined with the member's plan rules.
 
 Payers maintain a prior authorization requirements list — essentially a lookup table of: *for this procedure code, on this benefit plan, is PA required?* The CDS Server evaluates each order in the `draftOrders` Bundle against this list.
+
 This step can get nuanced — PA requirements sometimes depend on:
 * Who is ordering (Practitioner resource — is it a specialist vs. PCP?)
 * Where it's being performed (ServiceRequest.locationReference or Encounter.serviceProvider — inpatient vs. outpatient)
@@ -144,24 +145,26 @@ This step can get nuanced — PA requirements sometimes depend on:
 
 **If PA required:** Proceed to Question 4.
 
-### Question 4: Is Additional Documentation Required?
+### Question 4: Can the Payer Decide in Real Time, or Is Additional Documentation Needed?
 
 **What the server looks at:** The payer's PA rules engine, plus any clinical data already available in the request.
 
 Even when PA is required, the payer may be able to make a real-time determination if enough clinical data was included in the prefetch. For example, if the ServiceRequest includes a diagnosis code (reasonCode) that clearly meets medical necessity criteria, the payer might auto-approve.
 
-If the payer cannot make a real-time determination and needs more information, the `systemAction` will carry:
+If auto-approved in real time: The `systemAction` on that order carries:
+* `pa-needed: auth-required`
+* `satisfied-pa-needed: satisfied` — PA is required for this service, but the payer has already satisfied it based on the information available
+* `doc-needed: no-doc-needed` — no further documentation is needed from the clinician
+
+If the payer cannot decide and needs more information: The `systemAction` on that order carries:
 * `pa-needed: auth-required`
 * `doc-needed` — tells the EHR what type of additional documentation is needed to support the request
   * `clinical` - clinical documentation is needed (e.g., chart notes, diagnosis history)
   * `admin` — administrative documentation is needed (e.g., referral, proof of prior treatment)
   * `both` — both clinical and administrative documentation are needed
-  * `no-doc-needed` — no additional documentation required
-* A reference to one or more Questionnaire resources — these are the DTR forms the clinician (or staff) will need to fill out to support the PA request
+* `questionnaire: <url>` — a reference to one or more Questionnaire resources (the DTR forms the clinician or staff will need to fill out)
 
-If additional documentation is required, the `systemAction` on that order will carry `pa-needed: auth-required` along with a reference to the relevant Questionnaire(s) in `questionnaire: <url to the questionnaire>`. 
-
-he payer may also return a `card` with a DTR launch link for the clinician to see — but the questionnaire reference itself can be delivered entirely via `systemActions`, allowing the EHR to attach it to the order automatically.
+The payer may also return a `card` with a DTR launch link for the clinician to see — but the questionnaire reference itself can be delivered entirely via `systemActions`, allowing the EHR to attach it to the order automatically.
 
 ```mermaid
 flowchart TD
@@ -181,7 +184,7 @@ flowchart TD
 
     E -- Yes --> F{Can PA be decided<br/>in real time?<br/>Diagnosis codes · Medical necessity criteria<br/>already in prefetch}
 
-    F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = auth-required, approved]
+    F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = auth-required<br/>satisfied-pa-needed = satisfied<br/>doc-needed = no-doc-needed]
 
     F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>doc-needed = clinical or admin or both<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
 
