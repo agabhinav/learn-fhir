@@ -183,7 +183,7 @@ flowchart TD
 
     F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = auth-required, approved]
 
-    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>doc-needed = clinical #124 admin #124 both<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
+    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>doc-needed = clinical or admin or both<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
 
     style C1 fill:#4a4a4a,color:#ffffff,stroke:#888888
     style D1 fill:#4a4a4a,color:#ffffff,stroke:#888888
