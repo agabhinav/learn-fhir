@@ -65,12 +65,13 @@ They build a “shopping cart” of orders during an encounter: E.g.
 
 When the clinician presses Sign All, the EHR fires a single order-sign CDS Hooks request, and all pending draft orders are bundled together in the `draftOrders` Bundle:
 
+```
 draftOrders Bundle  
  ├── ServiceRequest #1 (MRI Knee)  
  ├── ServiceRequest #2 (Physical Therapy)  
  ├── MedicationRequest #3 (Pain Medication)  
  └── DeviceRequest #4 (Knee Brace)  
-
+```
 
 ### CRD Response
 
@@ -142,7 +143,7 @@ This step can get nuanced — PA requirements sometimes depend on:
 * Where it's being performed (ServiceRequest.locationReference or Encounter.serviceProvider — inpatient vs. outpatient)
 * Clinical context — e.g., physical therapy may not require PA for the first 6 visits
 
-**If No PA required:** The `systemAction` on that order carries `covered: covered`, `pa-needed: no-auth-required`. Done for that order.
+**If No PA required:** The `systemAction` on that order carries `covered: covered`, `pa-needed: no-auth`. Done for that order.
 
 **If PA required:** Proceed to Question 4.
 
@@ -153,16 +154,14 @@ This step can get nuanced — PA requirements sometimes depend on:
 Even when PA is required, the payer may be able to make a real-time determination if enough clinical data was included in the prefetch. For example, if the ServiceRequest includes a diagnosis code (reasonCode) that clearly meets medical necessity criteria, the payer might auto-approve.
 
 If auto-approved in real time: The `systemAction` on that order carries:
-* `pa-needed: auth-required`
-* `satisfied-pa-needed: satisfied` — PA is required for this service, but the payer has already satisfied it based on the information available
-* `doc-needed: no-doc-needed` — no further documentation is needed from the clinician
+* `covered: covered`
+* `pa-needed: satisfied` — PA is required for this service, but the payer has already satisfied it based on the information available
 
 If the payer cannot decide and needs more information: The `systemAction` on that order carries:
-* `pa-needed: auth-required`
+* `pa-needed: auth-needed`
 * `doc-needed` — tells the EHR what type of additional documentation is needed to support the request
   * `clinical` - clinical documentation is needed (e.g., chart notes, diagnosis history)
   * `admin` — administrative documentation is needed (e.g., referral, proof of prior treatment)
-  * `both` — both clinical and administrative documentation are needed
 * `questionnaire: <url>` — a reference to one or more Questionnaire resources (the DTR forms the clinician or staff will need to fill out)
 
 The payer may also return a `card` with a DTR launch link for the clinician to see — but the questionnaire reference itself can be delivered entirely via `systemActions`, allowing the EHR to attach it to the order automatically.
@@ -181,13 +180,13 @@ flowchart TD
 
     D -- Yes --> E{Is prior authorization<br/>required?<br/>Procedure code · Plan rules<br/>Orderer · Site of care}
 
-    E -- No --> E1[systemAction:<br/>covered = covered<br/>pa-needed = no-auth-required]
+    E -- No --> E1[systemAction:<br/>covered = covered<br/>pa-needed = no-auth]
 
     E -- Yes --> F{Can PA be decided<br/>in real time?<br/>Diagnosis codes · Medical necessity criteria<br/>already in prefetch}
 
-    F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = auth-required<br/>satisfied-pa-needed = satisfied<br/>doc-needed = no-doc-needed]
+    F -- Yes, auto-approved --> F1[systemAction:<br/>covered = covered<br/>pa-needed = satisfied<br/>]
 
-    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-required<br/>doc-needed = clinical or admin or both<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
+    F -- No, more info needed --> G[systemAction:<br/>pa-needed = auth-needed<br/>doc-needed = clinical or admin<br/>Questionnaire reference attached to order<br/><br/>Card: DTR launch link for clinician]
 
     style C1 fill:#4a4a4a,color:#ffffff,stroke:#888888
     style D1 fill:#4a4a4a,color:#ffffff,stroke:#888888
@@ -376,7 +375,7 @@ The service is covered and no prior authorization is needed. No card is shown to
             "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
             "extension": [
               { "url": "covered", "valueCode": "covered" },
-              { "url": "pa-needed", "valueCode": "no-auth-required" }
+              { "url": "pa-needed", "valueCode": "no-auth" }
             ]
           }
         ]
@@ -404,9 +403,7 @@ PA is required for MRI knee, but the diagnosis code (`M17.11 — Primary osteoar
             "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
             "extension": [
               { "url": "covered", "valueCode": "covered" },
-              { "url": "pa-needed", "valueCode": "auth-required" },
-              { "url": "satisfied-pa-needed", "valueCode": "satisfied" },
-              { "url": "doc-needed", "valueCode": "no-doc-needed" }
+              { "url": "pa-needed", "valueCode": "satisfied" }
             ]
           }
         ]
@@ -448,7 +445,7 @@ PA is required and the payer cannot make a real-time determination from the info
             "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
             "extension": [
               { "url": "covered", "valueCode": "covered" },
-              { "url": "pa-needed", "valueCode": "auth-required" },
+              { "url": "pa-needed", "valueCode": "auth-needed" },
               { "url": "doc-needed", "valueCode": "clinical" },
               {
                 "url": "questionnaire",
