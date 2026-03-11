@@ -7,6 +7,7 @@
 * [CRD Request order-sign context](https://build.fhir.org/ig/FHIR/fhir-tools-ig/StructureDefinition-CDSHookOrderSignContext.html)
 * [CRD Request draftOrders Bundle](https://build.fhir.org/ig/HL7/davinci-crd/en/StructureDefinition-profile-bundle-request.html)
 * [CRD Response Logical Model](https://build.fhir.org/ig/HL7/davinci-crd//en/StructureDefinition-CRDHooksResponse.html)
+* [Coverage Information Extension](https://build.fhir.org/ig/HL7/davinci-crd/en/StructureDefinition-ext-coverage-information.html)
 
 ## Discovery
 
@@ -193,4 +194,271 @@ flowchart TD
     style E1 fill:#2e6b4f,color:#ffffff,stroke:#888888
     style F1 fill:#2e6b4f,color:#ffffff,stroke:#888888
     style G fill:#5a4e2e,color:#ffffff,stroke:#888888
+```
+
+## Sample Request & Responses
+
+> 💡 The samples below use minimal fields to keep things readable. Real-world requests and responses will have more fields.
+
+---
+
+### Scenario 1: Member Not Eligible
+
+#### Request
+
+The `Coverage` resource shows the member's coverage is no longer active.
+```json
+{
+  "hook": "order-sign",
+  "hookInstance": "abc-123",
+  "context": {
+    "patientId": "Patient/123",
+    "draftOrders": {
+      "resourceType": "Bundle",
+      "entry": [
+        {
+          "resource": {
+            "resourceType": "ServiceRequest",
+            "id": "sr-1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://www.ama-assn.org/go/cpt",
+                  "code": "73721",
+                  "display": "MRI knee"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "prefetch": {
+    "coverage": {
+      "resourceType": "Coverage",
+      "status": "cancelled",
+      "subscriberId": "MBR-987654",
+      "period": {
+        "start": "2023-01-01",
+        "end": "2024-12-31"
+      }
+    }
+  }
+}
+```
+
+#### Response
+
+No further evaluation is needed. The payer returns a warning card only.
+```json
+{
+  "cards": [
+    {
+      "summary": "Member coverage could not be verified",
+      "detail": "Coverage for member MBR-987654 appears inactive as of 2025-01-01. Please confirm eligibility before proceeding.",
+      "indicator": "warning"
+    }
+  ]
+}
+```
+
+---
+
+### Scenario 2: Member Is Eligible
+
+#### Request
+
+The `Coverage` resource shows active coverage. The `ServiceRequest` includes a CPT code for an MRI knee and a diagnosis code (`reasonCode`) that the payer's rules engine will use to evaluate medical necessity.
+```json
+{
+  "hook": "order-sign",
+  "hookInstance": "def-456",
+  "context": {
+    "patientId": "Patient/123",
+    "draftOrders": {
+      "resourceType": "Bundle",
+      "entry": [
+        {
+          "resource": {
+            "resourceType": "ServiceRequest",
+            "id": "sr-1",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://www.ama-assn.org/go/cpt",
+                  "code": "73721",
+                  "display": "MRI knee"
+                }
+              ]
+            },
+            "reasonCode": [
+              {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/sid/icd-10-cm",
+                    "code": "M17.11",
+                    "display": "Primary osteoarthritis, right knee"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "prefetch": {
+    "coverage": {
+      "resourceType": "Coverage",
+      "status": "active",
+      "subscriberId": "MBR-987654",
+      "period": {
+        "start": "2024-01-01",
+        "end": "2025-12-31"
+      }
+    }
+  }
+}
+```
+
+The four responses below all use this same request. Which response the payer returns depends entirely on what their rules engine determines.
+
+---
+
+#### Response A: Service Not Covered
+
+The payer's benefit plan does not cover MRI knee for this member. A warning card is shown to the clinician and the `systemAction` stamps the order with `covered: not-covered`.
+```json
+{
+  "cards": [
+    {
+      "summary": "Service not covered",
+      "detail": "MRI knee (CPT 73721) is not a covered benefit under this member's plan.",
+      "indicator": "critical"
+    }
+  ],
+  "systemActions": [
+    {
+      "type": "update",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "sr-1",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
+            "extension": [
+              { "url": "covered", "valueCode": "not-covered" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+---
+
+#### Response B: Covered, No PA Required
+
+The service is covered and no prior authorization is needed. No card is shown to the clinician — the `systemAction` silently stamps the order with the result.
+```json
+{
+  "systemActions": [
+    {
+      "type": "update",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "sr-1",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
+            "extension": [
+              { "url": "covered", "valueCode": "covered" },
+              { "url": "pa-needed", "valueCode": "no-auth-required" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+---
+
+#### Response C: PA Required, Auto-Approved in Real Time
+
+PA is required for MRI knee, but the diagnosis code (`M17.11 — Primary osteoarthritis, right knee`) included in the request meets the payer's medical necessity criteria. The payer approves in real time. No card is shown to the clinician.
+```json
+{
+  "systemActions": [
+    {
+      "type": "update",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "sr-1",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
+            "extension": [
+              { "url": "covered", "valueCode": "covered" },
+              { "url": "pa-needed", "valueCode": "auth-required" },
+              { "url": "satisfied-pa-needed", "valueCode": "satisfied" },
+              { "url": "doc-needed", "valueCode": "no-doc-needed" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+---
+
+#### Response D: PA Required, Additional Documentation Needed
+
+PA is required and the payer cannot make a real-time determination from the information available. The payer returns a card with a DTR launch link for the clinician, and the `systemAction` stamps the order with the questionnaire the clinician needs to complete.
+```json
+{
+  "cards": [
+    {
+      "summary": "Prior authorization required — additional documentation needed",
+      "detail": "MRI knee (CPT 73721) requires prior authorization. Please complete the documentation questionnaire.",
+      "indicator": "warning",
+      "links": [
+        {
+          "label": "Launch DTR to complete documentation",
+          "url": "https://payer.example.com/dtr",
+          "type": "smart"
+        }
+      ]
+    }
+  ],
+  "systemActions": [
+    {
+      "type": "update",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "sr-1",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/us/davinci-crd/StructureDefinition/ext-coverage-information",
+            "extension": [
+              { "url": "covered", "valueCode": "covered" },
+              { "url": "pa-needed", "valueCode": "auth-required" },
+              { "url": "doc-needed", "valueCode": "clinical" },
+              {
+                "url": "questionnaire",
+                "valueCanonical": "https://payer.example.com/Questionnaire/knee-mri-pa"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
 ```
