@@ -1,4 +1,4 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2" pages="2">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2" pages="3">
   <diagram name="crd-request-response" id="_wLlGGXfMLme-PQMY2Tg">
     <mxGraphModel dx="1426" dy="1006" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -113,7 +113,7 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram id="JEInzERzkFI-qAtpqUkC" name="hrx-single-member-match">
+  <diagram id="JEInzERzkFI-qAtpqUkC" name="hrex-single-member-match">
     <mxGraphModel dx="1426" dy="961" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -127,31 +127,31 @@
         <mxCell id="c-MCMwm8tpZyGU7Lehs2-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="&lt;b&gt;Parameters&lt;/b&gt;" vertex="1">
           <mxGeometry height="570" width="260" x="60" y="70" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCE5FF;fontColor=default;convertToSvg=1;" value="&lt;b&gt;MemberPatient&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Patient&lt;/div&gt;&lt;div&gt;name, dob, gender&lt;/div&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;fontColor=#4C0099;convertToSvg=1;strokeColor=#C3ABD0;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;" value="&lt;b&gt;MemberPatient&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Patient&lt;/div&gt;&lt;div&gt;name, dob, gender&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="80" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFCC;" value="&lt;b&gt;CoverageToMatch&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;old insurance card&lt;/div&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;strokeColor=#82b366;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=#006600;" value="&lt;b&gt;CoverageToMatch&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;old insurance card&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="80" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;" value="&lt;b&gt;CoverageToLink&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;new payer&#39;s coverage&lt;/div&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;dashed=1;strokeColor=#82b366;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=#006600;" value="&lt;b&gt;CoverageToLink&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;new payer&#39;s coverage&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="80" y="380" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;" value="&lt;b&gt;Consent&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;resourceType: Consent&lt;/div&gt;&lt;div&gt;Attestation of member opt-in&lt;/div&gt;&lt;div&gt;policy: #regular, #sensitive&lt;/div&gt;&lt;div&gt;provision.type: permit&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=#666600;" value="&lt;b&gt;Consent&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;resourceType: Consent&lt;/div&gt;&lt;div&gt;Attestation of member opt-in&lt;/div&gt;&lt;div&gt;policy: #regular, #sensitive&lt;/div&gt;&lt;div&gt;provision.type: permit&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="80" y="515" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCE5FF;" value="&lt;b&gt;MemberIdentifier&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;valueIdentifier&lt;/div&gt;&lt;/div&gt;&lt;div&gt;type.code: UMB&lt;/div&gt;&lt;div&gt;old payer member identifier&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;strokeColor=#C3ABD0;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=#4C0099;" value="&lt;b&gt;MemberIdentifier&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;valueIdentifier&lt;/div&gt;&lt;/div&gt;&lt;div&gt;type.code: UMB&lt;/div&gt;&lt;div&gt;old payer member identifier&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="450" y="120" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCE5FF;" value="&lt;b&gt;MemberId&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;valueReference&lt;/div&gt;&lt;div&gt;matched Patient resource&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;strokeColor=#C3ABD0;strokeWidth=2;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=#4C0099;" value="&lt;b&gt;MemberId&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;valueReference&lt;/div&gt;&lt;div&gt;matched Patient resource&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="100" width="220" x="450" y="250" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" value="&lt;b&gt;not-found&lt;/b&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeWidth=2;strokeColor=#ae4132;align=center;verticalAlign=middle;spacingTop=2;spacingBottom=2;fontFamily=Helvetica;fontSize=12;fontColor=default;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;not-found&lt;/font&gt;&lt;/b&gt;" vertex="1">
           <mxGeometry height="60" width="90" x="460" y="470" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" value="&lt;b&gt;multiple-matches&lt;/b&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;spacingTop=2;spacingBottom=2;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;multiple-matches&lt;/font&gt;&lt;/b&gt;" vertex="1">
           <mxGeometry height="60" width="90" x="580" y="470" as="geometry" />
         </mxCell>
-        <mxCell id="c-MCMwm8tpZyGU7Lehs2-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" value="&lt;b&gt;Cannot process Consent&lt;/b&gt;" vertex="1">
+        <mxCell id="c-MCMwm8tpZyGU7Lehs2-14" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;fontColor=default;spacingTop=2;spacingBottom=2;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;Cannot process Consent&lt;/font&gt;&lt;/b&gt;" vertex="1">
           <mxGeometry height="60" width="210" x="460" y="550" as="geometry" />
         </mxCell>
         <mxCell id="c-MCMwm8tpZyGU7Lehs2-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Request (new payer&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; old payer)" vertex="1">
@@ -171,6 +171,95 @@
             <mxPoint x="580" y="54.5" as="sourcePoint" />
             <mxPoint x="610" y="54.5" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="bulk-member-match" id="z6swH8IjsPDhWB5uMvJW">
+    <mxGraphModel dx="1426" dy="961" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="noexrxdB5ihVpPSTpE_a-0" />
+        <mxCell id="noexrxdB5ihVpPSTpE_a-1" parent="noexrxdB5ihVpPSTpE_a-0" />
+        <mxCell id="noexrxdB5ihVpPSTpE_a-14" parent="noexrxdB5ihVpPSTpE_a-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Request&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;POST /Group/$bulk-member-match&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="220" x="40" y="38" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-8" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#CCCCCC;align=left;spacingLeft=30;spacingTop=2;strokeWidth=2;" value="&lt;b&gt;Parameters&lt;/b&gt;&lt;div&gt;resourceType: Parameters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="640" width="490" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-0" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#EEEEEE;fontColor=#333333;strokeColor=#999999;align=center;spacingLeft=0;spacingTop=0;spacing=0;strokeWidth=2;" value="&lt;b&gt;parameter&lt;/b&gt;&lt;div&gt;name: MemberBundle ... one per member&lt;/div&gt;" vertex="1">
+          <mxGeometry height="480" width="430" x="70" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-5" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#E9E9E9;fontColor=#333333;strokeColor=#B3B3B3;align=center;spacingLeft=0;spacingTop=2;spacing=0;spacingBottom=0;container=0;strokeWidth=2;" value="&lt;b&gt;part [ ] - all four are siblings in this array&lt;/b&gt;" vertex="1">
+          <mxGeometry height="410" width="370" x="100" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-1" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;convertToSvg=1;strokeColor=#C3ABD0;strokeWidth=2;fontColor=#4C0099;spacingTop=2;spacingBottom=2;container=0;" value="&lt;b&gt;MemberPatient&lt;/b&gt;&lt;div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;resourceType: Patient&lt;/div&gt;&lt;div&gt;name, dob, gender&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="310" x="130" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-2" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;strokeColor=#82b366;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#006600;container=0;" value="&lt;b&gt;CoverageToMatch&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;old insurance card&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="310" x="130" y="307" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-3" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;strokeColor=#82b366;strokeWidth=2;spacingTop=2;spacingBottom=2;dashed=1;fontColor=#006600;container=0;" value="&lt;b&gt;CoverageToLink&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;div&gt;resourceType: Coverage&lt;/div&gt;&lt;div&gt;new payer&#39;s coverage, new enrollment details&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="310" x="130" y="393" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-4" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;spacingTop=2;spacingBottom=2;strokeColor=#d6b656;strokeWidth=2;fontColor=#666600;container=0;" value="&lt;b&gt;Consent&lt;/b&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;resourceType: Consent&lt;/div&gt;&lt;div&gt;Attestation of member opt-in&lt;/div&gt;&lt;div&gt;policy: #regular, #sensitive&lt;/div&gt;&lt;div&gt;provision.type: permit&lt;/div&gt;" vertex="1">
+          <mxGeometry height="100" width="310" x="130" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="odJjHhqEzUVgSUOb2kuF-9" parent="noexrxdB5ihVpPSTpE_a-1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#ddf8eb, #002813);strokeColor=#82b366;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#006600;container=0;" value="&lt;b&gt;Async transport&lt;/b&gt;&lt;div&gt;POST&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 202 Accepted + poll URL&lt;/div&gt;&lt;div&gt;GET poll&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 202&lt;/div&gt;&lt;div&gt;GET poll&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 200 OK&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="70" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="22YwK_97I-fMeyXnvRXQ-0" edge="1" parent="noexrxdB5ihVpPSTpE_a-1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="274" y="687" as="sourcePoint" />
+            <mxPoint x="304" y="687" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22YwK_97I-fMeyXnvRXQ-1" edge="1" parent="noexrxdB5ihVpPSTpE_a-1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="215" y="657" as="sourcePoint" />
+            <mxPoint x="245" y="657" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22YwK_97I-fMeyXnvRXQ-2" edge="1" parent="noexrxdB5ihVpPSTpE_a-1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="284" y="672" as="sourcePoint" />
+            <mxPoint x="314" y="672" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-10" connectable="0" parent="noexrxdB5ihVpPSTpE_a-1" style="group" value="" vertex="1">
+          <mxGeometry height="770" width="520" x="640" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-9" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#CCCCCC;align=left;spacingLeft=30;spacingTop=2;strokeWidth=2;" value="&lt;b&gt;Parameters&lt;/b&gt;&lt;div&gt;resourceType: Parameters&lt;/div&gt;" vertex="1">
+          <mxGeometry height="825" width="550" x="-30" y="-55" as="geometry" />
+        </mxCell>
+        <mxCell id="22YwK_97I-fMeyXnvRXQ-10" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=0;whiteSpace=wrap;html=1;fillColor=light-dark(#EFF6F2,#082819);strokeColor=#82b366;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#006600;container=0;verticalAlign=top;glass=0;shadow=0;" value="&lt;b&gt;MatchedMembers&lt;/b&gt;&lt;div&gt;Group. Has Group.id&lt;/div&gt;&lt;div&gt;Group.id is used in $davinci-data-export to retrieve data for all matched members&lt;/div&gt;" vertex="1">
+          <mxGeometry height="250" width="490" as="geometry" />
+        </mxCell>
+        <mxCell id="x_S9MzPCXSLU26CfGlgV-0" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;strokeColor=#C3ABD0;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#4C0099;container=0;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;" value="&lt;b&gt;contained [ ]&lt;/b&gt;&lt;div&gt;Patient resources from the Request&lt;/div&gt;&lt;div&gt;id: 1, 2...&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="x_S9MzPCXSLU26CfGlgV-1" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFFE6;strokeColor=#82b366;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#006600;container=0;" value="&lt;b&gt;member [ ]&lt;/b&gt;&lt;div&gt;Reference to contained Patient.#id (e.g. #1)&lt;/div&gt;&lt;div&gt;Reference to Patient on old payer system (e.g. Patient/1001)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-0" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE8E5;strokeColor=#ae4132;strokeWidth=2;spacingTop=2;spacingBottom=2;container=0;verticalAlign=top;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;NonMatchedMembers&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;Group. No Group.id&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="490" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-1" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;strokeColor=#C3ABD0;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#4C0099;container=0;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;" value="&lt;b&gt;contained [ ]&lt;/b&gt;&lt;div&gt;Patient resources from the Request&lt;/div&gt;&lt;div&gt;id: 3...&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-2" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;strokeWidth=2;spacingTop=2;spacingBottom=2;container=0;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;member [ ]&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;Reference to contained Patient.#id (e.g. #3)&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-6" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;spacingTop=2;spacingBottom=2;container=0;verticalAlign=top;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 51, 0);&quot;&gt;ConsentConstrainedMembers&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(102, 51, 0);&quot;&gt;Group. No Group.id&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="490" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-7" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8EAFF;strokeColor=#C3ABD0;strokeWidth=2;spacingTop=2;spacingBottom=2;fontColor=#4C0099;container=0;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=12;" value="&lt;b&gt;contained [ ]&lt;/b&gt;&lt;div&gt;Patient resources from the Request&lt;/div&gt;&lt;div&gt;id: 4...&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-8" parent="5TIw0K2egVgQPZl1X4lF-10" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;strokeWidth=2;spacingTop=2;spacingBottom=2;container=0;" value="&lt;b&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;member [ ]&lt;/font&gt;&lt;/b&gt;&lt;div&gt;&lt;font style=&quot;color: rgb(102, 0, 0);&quot;&gt;Reference to contained Patient.#id (e.g. #4)&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="70" width="430" x="30" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="5TIw0K2egVgQPZl1X4lF-11" parent="noexrxdB5ihVpPSTpE_a-1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontStyle=1" value="Bulk Member Match - Response Structure" vertex="1">
+          <mxGeometry height="30" width="260" x="610" y="38" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

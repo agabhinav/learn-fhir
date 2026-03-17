@@ -3,6 +3,7 @@
 ## References
 * [HRex Member Match](https://hl7.org/fhir/us/davinci-hrex/OperationDefinition-member-match.html)
 * [HRex Patient Demographics](https://hl7.org/fhir/us/davinci-hrex/StructureDefinition-hrex-patient-demographics.html)
+* [PDex Bulk Member Match](https://build.fhir.org/ig/HL7/davinci-epdx/OperationDefinition-BulkMemberMatch.html)
 
 ## Member Match And Its Role In Payer-to-Payer Exchange
 
@@ -41,7 +42,7 @@ The **response** is a FHIR `Parameters` resource.
 | MemberId | Reference | 0..1 | A reference to the matched `Patient` resource on old payer's system |
 
 
-![hrex-single-member-match](../images/diagrams-hrx-single-member-match.png)
+![hrex-single-member-match](../images/diagrams-hrex-single-member-match.png)
 
 **Sample Request (relevant parts)**
 
@@ -155,5 +156,12 @@ Matching behavior is:
 }
 ```
 
-## Multi Member Match
+## PDex Bulk Member Match
 
+Bulk Member Match Operation enables Payers to match multiple members against another Payer's records for bulk data exchange.
+
+The operation returns Group resources containing matched, non-matched, and constrained members. The matched members Group can be used with the $davinci-data-export operation to retrieve bulk FHIR data for all matched members. The $davinci-data-export operation returns a manifest file referencing bulk data files in ndjson format.
+
+URL: `[base]/Group/$bulk-member-match`
+
+![bulk-member-match](../images/diagrams-bulk-member-match.png)

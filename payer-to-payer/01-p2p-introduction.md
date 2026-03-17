@@ -76,9 +76,81 @@ sequenceDiagram
 ### Key Concepts
 * The exchange is still limited to a **single member**.
 * **Payer‑mediated:** the member does not log in to the old plan.
-* **Single Member Match:** HRex member match is used to identify the member at the old payer.
+* **Single Member Match:** HRex member match is used to identify the member at the old payer. The new payer sends patient, coverage, and consent information in a `Parameters` resource, and the old payer identifies the member before allowing data retrieval.
 * Once the member is matched, data is retrieved using `GET Patient/{id}/$everything`.
 * **Single Member:** Data is returned for that one member only.
 * Single‑member bulk export is not supported.
 
 In PDex STU 2.0.0, the new payer identifies the member at the old payer using the HRex member match process. This replaces the member login flow used in STU 0.1.0. Once a single matching patient is found, that patient’s FHIR ID is used for data retrieval.
+
+## PDex STU 2.1.0
+
+```mermaid
+sequenceDiagram
+  autonumber
+  actor M as Member
+  participant PB as Payer B (new plan)
+  participant PA as Payer A (old plan)
+
+  rect rgb(237, 233, 254)
+    Note over M,PB: Enrollment & consent
+    M->>PB: Enrolls in new plan
+    M->>PB: Opts in to payer-to-payer data sharing
+    PB->>PB: Records consent for each member
+  end
+
+  rect rgb(225, 245, 238)
+    Note over PB,PA: SMART Backend Services auth
+    PB->>PA: POST /auth/token (signed JWT assertion)
+    PA-->>PB: Access token
+  end
+
+  rect rgb(237, 233, 254)
+    Note over PB,PA: Bulk member match — POST /Group/$bulk-member-match
+    PB->>PA: Parameters { parameter[ {name: MemberBundle, part[ MemberPatient, CoverageToMatch, Consent ]} x N ] }
+    PA-->>PB: 202 Accepted + Content-Location: /match-status/job-123
+    loop Poll for match results
+      PB->>PA: GET /match-status/job-123
+      PA-->>PB: 202 Accepted (in-progress)
+    end
+    PA-->>PB: 200 OK — Parameters { MatchedMembers Group (with Group.id), NonMatchedMembers Group, ConsentConstrainedMembers Group }
+    PB->>PB: Store Group.id from MatchedMembers
+    PB->>PB: Log NonMatchedMembers and ConsentConstrainedMembers
+  end
+
+  rect rgb(225, 245, 238)
+    Note over PB,PA: Bulk data export — POST /Group/{MatchedMembers.Group.id}/$davinci-data-export
+    PB->>PA: POST /Group/{Group.id}/$davinci-data-export (exportType: hl7.fhir.us.davinci-pdex)
+    PA-->>PB: 202 Accepted + Content-Location: /export-status/job-456
+    loop Poll for export completion
+      PB->>PA: GET /export-status/job-456
+      PA-->>PB: 202 Accepted (in-progress)
+    end
+    PA-->>PB: 200 OK — export manifest { output: [ { type, url } ... ] }
+  end
+
+  rect rgb(254, 243, 199)
+    Note over PB,PA: Download and ingest
+    PB->>PA: GET ndjson file URLs from export manifest
+    PA-->>PB: NDJSON files (Condition, MedicationRequest, Procedure, ExplanationOfBenefit ...)
+    PB->>PB: Incorporate data into member records
+    PB->>PB: Tag each resource with Provenance (source: Payer A)
+  end
+```
+
+### Key Concepts
+* Single member and multi-member data exchange
+* Single and bulk member match
+* Single member data retrieval using $everything
+* Multi-member data retrieval using Group export
+
+The bulk Payer-to-Payer exchange is initiated by supplying a `Parameters` resource to the `$bulk-member-match` operation. A set of OAuth2.0/SMART-on-FHIR Client Credentials SHALL be required to access the secured bulk-member-match operation endpoint.
+
+For each member submitted to the bulk-member-match operation the following parameters SHALL be supplied as a `parameter.part` element.
+
+* `MemberPatient` - HRex Patient demographics
+* `CoverageToMatch` - details of the prior health plan coverage, supplied by the member, typically from the health plan coverage card. Uses the HRex Coverage Profile
+* `Consent` - Record of consent received by requesting payer from Member to retrieve their records from the prior payer. This is an **opt-in**. Uses the HRex Consent Profile
+* `CoverageToLink` - Optional parameter. Details of new or prospective health plan coverage, provided by the health plan based upon the member’s enrolment. Uses the HRex Coverage Profile
+
+
