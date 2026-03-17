@@ -149,7 +149,7 @@ Matching behavior is:
     {
       "name": "MemberId",
       "valueReference": {
-        "reference": "http://example.org/new-payer/fhir/Patient/pat1"
+        "reference": "http://example.org/old-payer/fhir/Patient/pat1"
       }
     }
   ]
@@ -158,10 +158,49 @@ Matching behavior is:
 
 ## PDex Bulk Member Match
 
+Calling `$member-match` once per member doesn't work at scale. PDex 2.1.0 adds `$bulk-member-match` — the same four parameters per member, batched into one request and processed asynchronously.
+
 Bulk Member Match Operation enables Payers to match multiple members against another Payer's records for bulk data exchange.
 
-The operation returns Group resources containing matched, non-matched, and constrained members. The matched members Group can be used with the $davinci-data-export operation to retrieve bulk FHIR data for all matched members. The $davinci-data-export operation returns a manifest file referencing bulk data files in ndjson format.
+`POST [base]/Group/$bulk-member-match`
 
-URL: `[base]/Group/$bulk-member-match`
+Each member is a `parameter` block with `name: "MemberBundle"`. The four HRex parts sit inside it as `part` sub-elements. The block repeats once per member — the name "MemberBundle" intentionally repeats.
+
+```json
+{
+  "resourceType" : "Parameters",
+  "id" : "payer-multi-member-match-in",
+  "meta" : {
+    "profile" : ["http://hl7.org/fhir/us/davinci-pdex/StructureDefinition/pdex-parameters-multi-member-match-bundle-in"]
+  },
+  "parameter" : [{
+    "name" : "MemberBundle",
+    "part" : [
+      {"name" : "MemberPatient", "resource" : {"resourceType" : "Patient", "id" : "m1", "identifier" : .., "name" : .., "gender" : "female", "birthDate" : "1974-12-25"}},
+      {"name" : "CoverageToMatch", "resource" : {"resourceType" : "Coverage", ..}},
+      {"name" : "Consent", "resource" : {"resourceType" : "Consent", "patient" : {"reference" : "Patient/m1"}, "policy" : [{
+          "uri" : "http://hl7.org/fhir/us/davinci-hrex/StructureDefinition-hrex-consent.html#regular"
+        }], .. }},
+      {"name" : "CoverageToLink", "resource" : {"resourceType" : "Coverage",..}}
+    ]
+  },
+  {
+    "name" : "MemberBundle",
+    "part" : [
+      {"name" : "MemberPatient", "resource" : {"resourceType" : "Patient", "id" : "m2", "identifier" : .., "name" : .., "gender" : "female", "birthDate" : "1974-12-25"}},
+      {"name" : "CoverageToMatch", "resource" : {"resourceType" : "Coverage", ..}},
+      {"name" : "Consent", "resource" : {"resourceType" : "Consent", "patient" : {"reference" : "Patient/m2"}, "policy" : [{
+          "uri" : "http://hl7.org/fhir/us/davinci-hrex/StructureDefinition-hrex-consent.html#sensitive"
+        }], .. }},
+      {"name" : "CoverageToLink", "resource" : {"resourceType" : "Coverage",..}}
+    ]
+  }
+  ]
+}
+```
+
+The operation is asynchronous — Payer A returns `202 Accepted` with a polling URL. Payer B checks back until the job finishes.
+
+The operation returns Group resources containing matched, non-matched, and constrained members. The matched members Group can be used with the `$davinci-data-export` operation to retrieve bulk FHIR data for all matched members. The `$davinci-data-export` operation returns a manifest file referencing bulk data files in ndjson format.
 
 ![bulk-member-match](../images/diagrams-bulk-member-match.png)

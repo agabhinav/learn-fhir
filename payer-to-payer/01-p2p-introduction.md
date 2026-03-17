@@ -13,13 +13,9 @@ When a patient changes health plans, their data often does not move with them.
 New payers must re‑collect information like: Medications, Conditions, Coverage history etc.
 This causes delays, duplicate work, and poor member experience.
 
-CMS 0057F is about making sure patient data can follow the patient when they move between payers.
+CMS-0057-F is about making sure patient data can follow the patient when they move between payers. CMS-0057-F addressed this by mandating payer-to-payer data exchange using FHIR, through an HL7 specification called PDex (Da Vinci Payer Data Exchange). PDex explains how health plans (payers) can share a member's health history with providers, other payers, or apps. PDex defines how payer-to-payer data sharing should work using standard FHIR APIs. PDex has evolved over time as real‑world implementations exposed limitations and operational challenges.
 
-## PDex
-
-The **HL7 Da Vinci Payer Data Exchange (PDex)** Implementation Guide explains how health plans (payers) can share a member's health history with providers, other payers, or apps. **PDex** defines how payer-to-payer data sharing should work using standard FHIR APIs. PDex has evolved over time as real‑world implementations exposed limitations and operational challenges.
-
-## PDex STU 0.1.0
+## PDex STU 0.1.0 - Member-Initiated Exchange
 
 ```mermaid
 sequenceDiagram
@@ -37,17 +33,16 @@ sequenceDiagram
 ```
 
 ### Key Concepts
-* **Member Initiated:** The member initiates the payer‑to‑payer data exchange.
-* The member authenticates directly with the old health plan using existing credentials.
+* **Member Initiated:** The member initiates the payer‑to‑payer data exchange. The member authenticates directly with the old health plan using existing credentials.
 * **No Member Match:** identity is established through login.
-* The old plan issues an access token to the new plan’s payer‑to‑payer application.
+* **OAuth 2.0 token:** The old plan issues an access token to the new plan’s payer‑to‑payer application.
 * Using the access token, the new plan retrieves data from the old plan using `GET Patient/{id}/$everything`.
 * **Single Member:** Data is exchanged one member at a time.
 * There is no bulk or asynchronous export in STU 0.1.0.
 
-## PDex STU 2.0.0
+## PDex STU 2.0.0 - Payer-Mediated Exchange
 
-STU 2.0.0 shifted the flow from member‑initiated login to payer‑mediated exchange with member matching, while still keeping the data exchange limited to a single member.
+STU 2.0.0 shifted the flow from member‑initiated login to payer‑mediated exchange with member matching, while still keeping the data exchange limited to a single member. The member still provides consent, but they don't need to actively log in to the old plan.
 
 ```mermaid
 sequenceDiagram
@@ -75,15 +70,15 @@ sequenceDiagram
 
 ### Key Concepts
 * The exchange is still limited to a **single member**.
-* **Payer‑mediated:** the member does not log in to the old plan.
-* **Single Member Match:** HRex member match is used to identify the member at the old payer. The new payer sends patient, coverage, and consent information in a `Parameters` resource, and the old payer identifies the member before allowing data retrieval.
-* Once the member is matched, data is retrieved using `GET Patient/{id}/$everything`.
-* **Single Member:** Data is returned for that one member only.
+* **Payer‑mediated:** the member does not log in to the old plan. The new payer drives the exchange using information the member provided at enrollment (their old insurance card details).
+* **Single Member Match:** before any data is exchanged, the new payer calls `POST $member-match` on the old payer's system. HRex member match is used to identify the member at the old payer. The new payer sends patient, coverage, and consent information in a `Parameters` resource, and the old payer identifies the member before allowing data retrieval.
+  > See the Member Match chapter for more details.
+* **Single Member:** Once the member is matched, data for that one member is retrieved using `GET Patient/{id}/$everything`.
 * Single‑member bulk export is not supported.
 
-In PDex STU 2.0.0, the new payer identifies the member at the old payer using the HRex member match process. This replaces the member login flow used in STU 0.1.0. Once a single matching patient is found, that patient’s FHIR ID is used for data retrieval.
+## PDex STU 2.1.0 - Bulk Exchange
 
-## PDex STU 2.1.0
+Instead of one member at a time, Payer B sends all its members in a single request, waits for the old payer to process the batch, then pulls back everyone's data in one go. This is the version CMS-0057-F actually requires.
 
 ```mermaid
 sequenceDiagram
@@ -140,9 +135,12 @@ sequenceDiagram
 
 ### Key Concepts
 * Single member and multi-member data exchange
-* Single and bulk member match
-* Single member data retrieval using $everything
-* Multi-member data retrieval using Group export
+* Single and **bulk member match:** instead of calling `$member-match` once per member, Payer B bundles all its members into a single `POST /Group/$bulk-member-match` request. The old payer doesn't respond immediately — it returns a `202 Accepted` and a URL to check back on. Payer B polls that URL until the job is done.
+* The old payer processes the batch asynchronously and returns three groups: members it matched (`MatchedMembers`), members it couldn't find or multiple matches (`NonMatchedMembers`), and members it found but whose consent couldn't be honored (`ConsentConstrainedMembers`). Only `MatchedMembers` Group has a `Group.id`.
+  > See the Member Match chapter for the detailed request and response structure.
+* **Single member data retrieval** using `$everything`
+* **Multi-member data retrieval** using Group export. Payer B calls $davinci-data-export with the Group.id. Async pattern — poll until done, then collect an export manifest listing download URLs by resource type.
+* Download and tag. Each URL is an NDJSON file — one FHIR resource per line, split by type (Conditions, Medications, Procedures, etc.). Payer B loads them in and stamps each resource with a Provenance pointing back to Payer A.
 
 The bulk Payer-to-Payer exchange is initiated by supplying a `Parameters` resource to the `$bulk-member-match` operation. A set of OAuth2.0/SMART-on-FHIR Client Credentials SHALL be required to access the secured bulk-member-match operation endpoint.
 
