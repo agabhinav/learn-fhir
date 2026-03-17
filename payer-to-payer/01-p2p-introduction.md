@@ -80,6 +80,11 @@ sequenceDiagram
 
 Instead of one member at a time, Payer B sends all its members in a single request, waits for the old payer to process the batch, then pulls back everyone's data in one go. This is the version CMS-0057-F actually requires.
 
+### High-Level Diagram
+
+![diagrams-p2p-bulk-member](../images/diagrams-p2p-bulk-member.png)
+
+### Detailed Sequence Diagram
 ```mermaid
 sequenceDiagram
   autonumber
@@ -142,10 +147,12 @@ sequenceDiagram
 * **Multi-member data retrieval** using Group export. Payer B calls $davinci-data-export with the Group.id. Async pattern — poll until done, then collect an export manifest listing download URLs by resource type.
 * Download and tag. Each URL is an NDJSON file — one FHIR resource per line, split by type (Conditions, Medications, Procedures, etc.). Payer B loads them in and stamps each resource with a Provenance pointing back to Payer A.
 
-The bulk Payer-to-Payer exchange is initiated by supplying a `Parameters` resource to the `$bulk-member-match` operation. A set of OAuth2.0/SMART-on-FHIR Client Credentials SHALL be required to access the secured bulk-member-match operation endpoint.
+**Bulk Member Match: Request Details**
+> See the Member Match chapter for the detailed request and response structure.
 
-For each member submitted to the bulk-member-match operation the following parameters SHALL be supplied as a `parameter.part` element.
+The bulk Payer-to-Payer exchange is initiated by supplying a `Parameters` resource to the `$bulk-member-match` operation.
 
+For each member submitted to the bulk-member-match operation the following parameters can be supplied as a `parameter.part` element.
 * `MemberPatient` - HRex Patient demographics
 * `CoverageToMatch` - details of the prior health plan coverage, supplied by the member, typically from the health plan coverage card. Uses the HRex Coverage Profile
 * `Consent` - Record of consent received by requesting payer from Member to retrieve their records from the prior payer. This is an **opt-in**. Uses the HRex Consent Profile
